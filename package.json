@@ -1,0 +1,31 @@
+{
+  "name": "dm-server",
+  "version": "1.0.0",
+  "description": "Server for handling network request from dubmonk.com",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lintu/lastresort.git"
+  },
+  "keywords": [
+    "Server",
+    "dubmonk"
+  ],
+  "author": "lin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lintu/lastresort/issues"
+  },
+  "homepage": "https://github.com/lintu/lastresort#readme",
+  "dependencies": {
+    "btoa": "^1.1.2",
+    "express": "^4.14.0",
+    "jsmediatags": "^3.3.0",
+    "multer": "^1.2.0",
+    "uuid": "^2.0.3"
+  }
+}
