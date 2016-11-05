@@ -7,12 +7,59 @@ var uuid = require('uuid');
 var jsmediatags = require("jsmediatags");
 var btoa = require('btoa');
 var cors = require('cors');
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 const DEV = process.env.DEV;
 const PROD = process.env.PROD;
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, '')));
+
+var currentStreamingTrackId = '';
+try {
+    server.listen(90);
+} catch (error) {
+    console.log(error);
+}
+
+
+io.on('connection', (client)=> {
+    client.on('streamTrack', (data)=> {
+        console.log(data.url);
+        
+        stopStreaming();
+        currentStreamingTrackId = data.id;
+        
+        fs.readFile('./'+data.url , function(err, data) {
+            if(err) {
+                throw err;
+            }
+
+            sendFirstStream(data.slice(0, data.length/2));
+            
+            setTimeout(function() {
+                sendStreamUpdates(data.slice(data.length/2, data.length));
+            }, 5000);
+        });
+    });
+    
+    function sendStreamUpdates(data) {
+        client.emit('streamUpdates', data);
+    }
+    function sendFirstStream(data) {
+        client.emit('streamStart', data);
+    }
+    client.on('disconnect', ()=> {
+        console.log('disconnect request');
+    });
+    function getFirstSampleData() {
+        
+    }
+    function stopStreaming() {
+
+    }
+})
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -25,22 +72,13 @@ var storage = multer.diskStorage({
     }
 });
 var upload = multer({ storage: storage }).single('file');
-try {
-    var server = app.listen(90, function () {
-        var host = server.address().address;
-        var port = server.address().port;
-        console.log('Server on http: ', host, port);
-    });
-} catch (error) {
-    console.log(error);
-}
+
 app.get('/', function (req, res) {
     res.json({});
 });
 
 app.get('/song-stream', function() {
     var songId = req.query.songId;
-    
 });
 app.post('/upload', function (req, res, next) {
     var userFolder = 'user_data/songs/' + req.query.userId;

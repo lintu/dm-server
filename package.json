@@ -27,6 +27,7 @@
     "express": "^4.14.0",
     "jsmediatags": "^3.3.0",
     "multer": "^1.2.0",
+    "socket.io": "^1.5.1",
     "uuid": "^2.0.3"
   }
 }
