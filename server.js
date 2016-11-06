@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, '')));
 
 var currentStreamingTrackId = '';
 try {
-    server.listen(90);
+    server.listen(8080);
 } catch (error) {
     console.log(error);
 }
@@ -36,11 +36,14 @@ io.on('connection', (client)=> {
                 throw err;
             }
 
-            sendFirstStream(data.slice(0, data.length/2));
+            sendFirstStream(data.slice(0, data.length * 1/3));
             
             setTimeout(function() {
-                sendStreamUpdates(data.slice(data.length/2, data.length));
-            }, 5000);
+                sendStreamUpdates(data.slice(data.length * 1/3, data.length * 2/3));
+            }, 3000);
+            setTimeout(function() {
+                sendStreamUpdates(data.slice(data.length *2/3, data.length));
+            }, 3000);
         });
     });
     
