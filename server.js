@@ -40,10 +40,10 @@ io.on('connection', (client)=> {
             
             setTimeout(function() {
                 sendStreamUpdates(data.slice(data.length * 1/3, data.length * 2/3));
-            }, 3000);
+            }, 1000);
             setTimeout(function() {
                 sendStreamUpdates(data.slice(data.length *2/3, data.length));
-            }, 3000);
+            }, 1000);
         });
     });
     
